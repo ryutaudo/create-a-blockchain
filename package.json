@@ -5,7 +5,7 @@
   "repository": "git@github.com:ryutaudo/create-a-blockchain.git",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js"
+    "start": "node --experimental-modules index.mjs"
   },
   "dependencies": {
     "body-parser": "^1.15.2",

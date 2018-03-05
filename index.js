@@ -45,34 +45,111 @@ const MessageType = {
 // // Initialte blockchain
 // let blockchain = [getGenesisBlock()];
 
+/*******************************************
+************* GENERATE NEXT BLOCK **********
+********************************************/
+
+// // Calculate hash value with SHA256( Secure Hash Algorithm 256-bit )
+// const calculateHash = (index, previousHash, timestamp, data) => {
+// 	return CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
+// };
+
+// // Calculate hash value for a block
+// const calculateHashForBlock = (block) => {
+// 	return calculateHash(block.index, block.previousHash, block.timestamp, block.data);
+// };
+
+// // Create new Block with previous Block hash value
+// const generateNextBlock = (blockData) => {
+// 	const previousBlock = getLatestBlock();
+// 	const nextIndex = previousBlock.index + 1;
+// 	const nextTimestamp = new Date().getTime() / 1000;
+// 	const nextHash = calculateHash(nextIndex, previousBlock.hash, nextTimestamp, blockData);
+// 	return new Block(nextIndex, previousBlock.hash, nextTimestamp, blockData, nextHash);
+// };
+
+// const addBlock = (newBlock) => {
+// 	if (isValidNewBlock(newBlock, getLatestBlock())) {
+// 		blockchain.push(newBlock);
+// 	}
+// };
+
+/*******************************************
+************** CHECK SAFE BLOCK ************
+********************************************/
+
+// // Check if it is safe block
+// const isValidNewBlock = (newBlock, previousBlock) => {
+// 	if (previousBlock.index + 1 !== newBlock.index) {
+// 		console.log('invalid index');
+// 		return false;
+// 	} else if (previousBlock.hash !== newBlock.previousHash) {
+// 		console.log('invalid previoushash');
+// 		return false;
+// 	} else if (calculateHashForBlock(newBlock) !== newBlock.hash) {
+// 		console.log(typeof (newBlock.hash) + ' ' + typeof calculateHashForBlock(newBlock));
+// 		console.log('invalid hash: ' + calculateHashForBlock(newBlock) + ' ' + newBlock.hash);
+// 		return false;
+// 	}
+// 	return true;
+// };
+
+/*******************************************
+******* CHOOSE THE LONGEST BLOCKCHAIN ******
+********************************************/
+
+// // Choose the longest blockchain
+// const replaceChain = (newBlocks) => {
+// 	if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
+// 		console.log('Received blockchain is valid. Replacing current blockchain with received blockchain');
+// 		blockchain = newBlocks;
+// 		broadcast(responseLatestMsg());
+// 	} else {
+// 		console.log('Received blockchain invalid');
+// 	}
+// };
+
+// const isValidChain = (blockchainToValidate) => {
+// 	if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(getGenesisBlock())) {
+// 		return false;
+// 	}
+// 	const tempBlocks = [blockchainToValidate[0]];
+// 	for (let i = 1; i < blockchainToValidate.length; i++) {
+// 		if (isValidNewBlock(blockchainToValidate[i], tempBlocks[i - 1])) {
+// 			tempBlocks.push(blockchainToValidate[i]);
+// 		} else {
+// 			return false;
+// 		}
+// 	}
+// 	return true;
+// };
 
 /*******************************************
 ***************** CONTROL NODE *************
 ********************************************/
 
-// // Setting HTTP server
-// const initHttpServer = () => {
-// 	const app = express();
-// 	app.use(bodyParser.json());
+// Setting HTTP server
+const initHttpServer = () => {
+	const app = express();
+	app.use(bodyParser.json());
 
-// 	app.get('/blocks', (req, res) => res.send(JSON.stringify(blockchain)));
-// 	app.post('/mineBlock', (req, res) => {
-// 		const newBlock = generateNextBlock(req.body.data);
-// 		addBlock(newBlock);
-// 		broadcast(responseLatestMsg());
-// 		console.log('block added: ' + JSON.stringify(newBlock));
-// 		res.send();
-// 	});
-// 	app.get('/peers', (req, res) => {
-// 		res.send(sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort));
-// 	});
-// 	app.post('/addPeer', (req, res) => {
-// 		connectToPeers([req.body.peer]);
-// 		res.send();
-// 	});
-// 	app.listen(http_port, () => console.log('Listening http on port: ' + http_port));
-// };
-
+	app.get('/blocks', (req, res) => res.send(JSON.stringify(blockchain)));
+	app.post('/mineBlock', (req, res) => {
+		const newBlock = generateNextBlock(req.body.data);
+		addBlock(newBlock);
+		broadcast(responseLatestMsg());
+		console.log('block added: ' + JSON.stringify(newBlock));
+		res.send();
+	});
+	app.get('/peers', (req, res) => {
+		res.send(sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort));
+	});
+	app.post('/addPeer', (req, res) => {
+		connectToPeers([req.body.peer]);
+		res.send();
+	});
+	app.listen(http_port, () => console.log('Listening http on port: ' + http_port));
+};
 
 const initP2PServer = () => {
 	const server = new WebSocket.Server({port: p2p_port});
@@ -115,56 +192,6 @@ const initErrorHandler = (ws) => {
 	ws.on('error', () => closeConnection(ws));
 };
 
-/*******************************************
-************* GENERATE NEXT BLOCK **********
-********************************************/
-
-// // Create new Block with previsou Block hash value
-// const generateNextBlock = (blockData) => {
-// 	const previousBlock = getLatestBlock();
-// 	const nextIndex = previousBlock.index + 1;
-// 	const nextTimestamp = new Date().getTime() / 1000;
-// 	const nextHash = calculateHash(nextIndex, previousBlock.hash, nextTimestamp, blockData);
-// 	return new Block(nextIndex, previousBlock.hash, nextTimestamp, blockData, nextHash);
-// };
-
-
-// const calculateHashForBlock = (block) => {
-// 	return calculateHash(block.index, block.previousHash, block.timestamp, block.data);
-// };
-
-
-// // Calculate hash value with SHA256( Secure Hash Algorithm 256-bit )
-// const calculateHash = (index, previousHash, timestamp, data) => {
-// 	return CryptoJS.SHA256(index + previousHash + timestamp + data).toString();
-// };
-
-// const addBlock = (newBlock) => {
-// 	if (isValidNewBlock(newBlock, getLatestBlock())) {
-// 		blockchain.push(newBlock);
-// 	}
-// };
-
-
-/*******************************************
-************** CHECK SAFE BLOCK ************
-********************************************/
-
-// // Check if it is safe block
-// const isValidNewBlock = (newBlock, previousBlock) => {
-// 	if (previousBlock.index + 1 !== newBlock.index) {
-// 		console.log('invalid index');
-// 		return false;
-// 	} else if (previousBlock.hash !== newBlock.previousHash) {
-// 		console.log('invalid previoushash');
-// 		return false;
-// 	} else if (calculateHashForBlock(newBlock) !== newBlock.hash) {
-// 		console.log(typeof (newBlock.hash) + ' ' + typeof calculateHashForBlock(newBlock));
-// 		console.log('invalid hash: ' + calculateHashForBlock(newBlock) + ' ' + newBlock.hash);
-// 		return false;
-// 	}
-// 	return true;
-// };
 
 
 const connectToPeers = (newPeers) => {
@@ -199,35 +226,7 @@ const handleBlockchainResponse = (message) => {
 	}
 };
 
-/*******************************************
-******* CHOOSE THE LONGEST BLOCKCHAIN ******
-********************************************/
 
-// // Choose the longest blockchain
-// const replaceChain = (newBlocks) => {
-// 	if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
-// 		console.log('Received blockchain is valid. Replacing current blockchain with received blockchain');
-// 		blockchain = newBlocks;
-// 		broadcast(responseLatestMsg());
-// 	} else {
-// 		console.log('Received blockchain invalid');
-// 	}
-// };
-
-const isValidChain = (blockchainToValidate) => {
-	if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(getGenesisBlock())) {
-		return false;
-	}
-	const tempBlocks = [blockchainToValidate[0]];
-	for (let i = 1; i < blockchainToValidate.length; i++) {
-		if (isValidNewBlock(blockchainToValidate[i], tempBlocks[i - 1])) {
-			tempBlocks.push(blockchainToValidate[i]);
-		} else {
-			return false;
-		}
-	}
-	return true;
-};
 
 const getLatestBlock = () => blockchain[blockchain.length - 1];
 const queryChainLengthMsg = () => ({'type': MessageType.QUERY_LATEST});

@@ -20,17 +20,24 @@ const initHttpServer = () => {
 	const app = express();
 	app.use(bodyParser.json());
 
+	// GET current blockchain
 	app.get('/blocks', (req, res) => res.send(JSON.stringify(blockchain)));
+
+	// Post create new block
 	app.post('/mineBlock', (req, res) => {
 		const newBlock = generateNextBlock(req.body.data);
 		addBlock(newBlock);
 		broadcast(responseLatestMsg());
 		console.log('block added: ' + JSON.stringify(newBlock));
 		res.send();
-	});
+	}); 
+
+	// GET list of peers participating P2P network
 	app.get('/peers', (req, res) => {
 		res.send(sockets.map(s => s._socket.remoteAddress + ':' + s._socket.remotePort));
 	});
+
+	// POST new peer to P2P network
 	app.post('/addPeer', (req, res) => {
 		connectToPeers([req.body.peer]);
 		res.send();

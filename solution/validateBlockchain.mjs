@@ -32,6 +32,4 @@ const replaceChain = (newBlocks) => {
 	}
 };
 
-
-
 export default replaceChain;

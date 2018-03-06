@@ -18,22 +18,22 @@ const calculateHash = (
 	timestamp,
 	data
 ) => {
-	return CryptoJS.SHA256(
-		index
-    + previousHash
-    + timestamp
-    + data
-	).toString();
+	// return CryptoJS.SHA256(
+	// 	index
+	//   + previousHash
+	//   + timestamp
+	//   + data
+	// ).toString();
 };
 
 // Calculate hash value for a block
 const calculateHashForBlock = (block) => {
-	return calculateHash(
-		block.index,
-		block.previousHash,
-		block.timestamp,
-		block.data
-	);
+	// return calculateHash(
+	// 	block.index,
+	// 	block.previousHash,
+	// 	block.timestamp,
+	// 	block.data
+	// );
 };
 
 export {

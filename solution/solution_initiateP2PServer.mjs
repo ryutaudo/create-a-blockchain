@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { blockchain, getLatestBlock } from './initiateBlockchain';
+import { getLatestBlock } from './initiateBlockchain';
 
 const p2p_port = process.env.P2P_PORT || 6001;
 

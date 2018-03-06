@@ -5,10 +5,15 @@
   "repository": "git@github.com:ryutaudo/create-a-blockchain.git",
   "license": "MIT",
   "scripts": {
-    "start": "node --experimental-modules index.mjs"
+    "start": "node index.js",
+    "start-solution": "node --experimental-modules solution/index.mjs",
+    "quickstart": "concurrently \"cross-env HTTP_PORT=3001 P2P_PORT=6001 yarn start\" \"sleep 2 && cross-env HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 yarn start\"",
+    "quickstart-solution": "concurrently \"cross-env HTTP_PORT=3001 P2P_PORT=6001 yarn start-solution\" \"sleep 2 && cross-env HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 yarn start-solution\""
   },
   "dependencies": {
     "body-parser": "^1.15.2",
+    "concurrently": "^3.5.1",
+    "cross-env": "^5.1.3",
     "crypto-js": "^3.1.6",
     "express": "~4.11.1",
     "ws": "^1.1.0"

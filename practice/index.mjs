@@ -1,5 +1,5 @@
 /***********************************
- * 1. Block Data Structure 
+ * 1. Block Data Structure
  * 2. Initiate Blockchain
  * 3. Calculate Hash
  * 4. Validate New Block

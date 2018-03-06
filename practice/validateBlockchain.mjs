@@ -5,17 +5,6 @@ import { blockchain, getGenesisBlock } from './initiateBlockchain';
 import isValidNewBlock from './validateNewBlock';
 import { broadcast, responseLatestMsg } from './initiateP2PServer';
 
-// Choose the longest blockchain
-const replaceChain = (newBlocks) => {
-	if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
-		console.log('Received blockchain is valid. Replacing current blockchain with received blockchain');
-		blockchain = newBlocks;
-		broadcast(responseLatestMsg());
-	} else {
-		console.log('Received blockchain invalid');
-	}
-};
-
 // Validate blockchain
 const isValidChain = (blockchainToValidate) => {
 	if (JSON.stringify(blockchainToValidate[0]) !== JSON.stringify(getGenesisBlock())) {
@@ -31,5 +20,17 @@ const isValidChain = (blockchainToValidate) => {
 	}
 	return true;
 };
+
+// Choose the longest blockchain
+const replaceChain = (newBlocks) => {
+	if (isValidChain(newBlocks) && newBlocks.length > blockchain.length) {
+		console.log('Received blockchain is valid. Replacing current blockchain with received blockchain');
+		blockchain = newBlocks;
+		broadcast(responseLatestMsg());
+	} else {
+		console.log('Received blockchain invalid');
+	}
+};
+
 
 export default replaceChain;

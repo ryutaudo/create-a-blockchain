@@ -1,24 +1,45 @@
-# Create Your First Simple Blockchain
+# Meetup: Create Your First Simple Blockchain
 
-### Quick start
-(set up two connected nodes and mine 1 block)
+## About this repository
+
+This repository is for [this meetup event](https://www.meetup.com/CodeChrysalis/events/247572273/).
+
+## Requirements
+
+- Node.js (Confirmed working on version 8.9.1.)
+- Yarn (Preferable)
+- Postman (Optional)
+
+## How to install libraries
+
+`yarn` or `npm` is used for install libraries.
 ```
 yarn install
-HTTP_PORT=3001 P2P_PORT=6001 npm start
-HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 npm start
-curl -H "Content-type:application/json" --data '{"data" : "Some data to the first block"}' http://localhost:3001/mineBlock
+or
+npm install
 ```
 
-### HTTP API
-##### Get blockchain
+## Quick start
+Working code is already prepared in `solution` directory.
+(set up two connected nodes and mine 1 block)
+To run solution directory:
+
+```
+yarn quickstart-solution
+or
+npm run quickstart-solution
+```
+
+## HTTP API
+### Get blockchain
 ```
 curl http://localhost:3001/blocks
 ```
-##### Create block
+### Create block
 ```
 curl -H "Content-type:application/json" --data '{"data" : "Some data to the first block"}' http://localhost:3001/mineBlock
 ``` 
-##### Add peer
+### Add peer
 ```
 curl -H "Content-type:application/json" --data '{"peer" : "ws://localhost:6001"}' http://localhost:3001/addPeer
 ```

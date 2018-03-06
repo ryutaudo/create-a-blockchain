@@ -5,7 +5,7 @@
   "repository": "git@github.com:ryutaudo/create-a-blockchain.git",
   "license": "MIT",
   "scripts": {
-    "start": "node index.js",
+    "start": "node --experimental-modules practice/index.mjs",
     "start-solution": "node --experimental-modules solution/index.mjs",
     "quickstart": "concurrently \"cross-env HTTP_PORT=3001 P2P_PORT=6001 yarn start\" \"sleep 2 && cross-env HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 yarn start\"",
     "quickstart-solution": "concurrently \"cross-env HTTP_PORT=3001 P2P_PORT=6001 yarn start-solution\" \"sleep 2 && cross-env HTTP_PORT=3002 P2P_PORT=6002 PEERS=ws://localhost:6001 yarn start-solution\""

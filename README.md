@@ -6,17 +6,13 @@ This repository is for [this meetup event](https://www.meetup.com/CodeChrysalis/
 
 ## Requirements
 
-- Node.js (Confirmed working on version 8.9.1.)
-- Yarn (Preferable)
+- Node.js (Confirmed working on version 9.5.0.)
+- Yarn (Confirmed working on version 1.3.2)
 - Postman (Optional)
 
 ## How to install libraries
-
-`yarn` or `npm` is used for install libraries.
 ```
 yarn install
-or
-npm install
 ```
 
 ## Quick start
@@ -26,8 +22,6 @@ To run solution directory:
 
 ```
 yarn quickstart-solution
-or
-npm run quickstart-solution
 ```
 
 ## HTTP API
